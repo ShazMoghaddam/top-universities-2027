@@ -24,12 +24,8 @@ errors = []
 
 
 def norm(text):
-    """Keep letters only, lower case and single spaced.
-
-    The PDF draws digits and brackets with tabular-figure glyphs that do not
-    extract as text, so names and "Best for" lines are compared on letters only.
-    Scores are checked in the CSV above instead.
-    """
+    """Keep letters only, lower case and single spaced, so line breaks,
+    punctuation and the flag emoji next to each city don't affect matching."""
     return " ".join(re.sub(r"[^a-z]+", " ", text.lower()).split())
 
 
@@ -70,11 +66,16 @@ else:
     reader = PdfReader(pdf_path)
     if len(reader.pages) != PAGES:
         errors.append(f"PDF has {len(reader.pages)} pages, expected {PAGES}")
-    pdf_text = norm(" ".join(p.extract_text() or "" for p in reader.pages))
+    raw = " ".join(p.extract_text() or "" for p in reader.pages)
+    pdf_text = norm(raw)
+    pdf_words = raw.split()
     for r in rows:
         for field in ("university", "best_for"):
             if norm(r[field]) not in pdf_text:
                 errors.append(f"{r['university']}: {field} '{r[field]}' not found in the PDF")
+        # Scores must be real, copyable text in the PDF, not just look right
+        if f"{float(r['overall_score']):.1f}" not in pdf_words:
+            errors.append(f"{r['university']}: score {r['overall_score']} is not readable text in the PDF")
 
 for i in range(1, PAGES + 1):
     if not (ROOT / "output" / "slides" / f"slide-{i}.png").exists():

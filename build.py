@@ -4,6 +4,7 @@ Usage:
     python build.py                      # uses data/edition-2027.json
     python build.py data/edition-2028.json
 """
+import base64
 import csv
 import collections
 import json
@@ -51,16 +52,25 @@ FONTS = ('<link rel="preconnect" href="https://fonts.googleapis.com">'
          '<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..800'
          '&family=Lora:ital@1&display=swap" rel="stylesheet">')
 
+# Numbers use a copy of Inter with tabular, open digits (tnum + ss01) built in as the
+# default shapes. Switching them on with CSS features instead makes Chromium write
+# glyphs into the PDF that copy, search and screen-read as gibberish. 'calt' is off
+# on body for the same reason (Inter's capital-height brackets and dashes).
+# fonts/README.md explains how InterNum.woff2 was made.
+NUM_FONT = base64.b64encode((ROOT / "fonts" / "InterNum.woff2").read_bytes()).decode()
+FONTS += (f"<style>@font-face {{ font-family:'Inter Num'; font-weight:100 900; "
+          f"src:url(data:font/woff2;base64,{NUM_FONT}) format('woff2'); }}</style>")
+
 CSS = """
 @page { size: 1080px 1350px; margin: 0; }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 :root { --paper:#F5F2EB; --ink:#14161B; --muted:#6A6E77; --rule:#DFD9CC; --soft:#ECE7DC; }
-body { font-family: 'Inter', sans-serif; color: var(--ink); -webkit-font-smoothing: antialiased; }
+body { font-family: 'Inter', sans-serif; font-feature-settings:'calt' 0; color: var(--ink); -webkit-font-smoothing: antialiased; }
 .page { width:1080px; height:1350px; position:relative; overflow:hidden; page-break-after:always; background:var(--paper); }
 .disp { font-family:'Inter Display','Inter',sans-serif; }
 .serif { font-family:'Lora',serif; font-style:italic; font-weight:400; }
 .flag { font-family:'Noto Color Emoji','Apple Color Emoji','Segoe UI Emoji',sans-serif; }
-.num { font-variant-numeric: tabular-nums; font-feature-settings:'tnum','ss01'; }
+.num { font-family:'Inter Num','Inter',sans-serif; }
 a { color: inherit; text-decoration: none; }
 
 /* cover */
