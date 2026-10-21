@@ -1,0 +1,15 @@
+{
+  "edition": 2027,
+  "data_file": "the-2027-top50.csv",
+  "author": "Shaz Moghaddam",
+  "location": "London",
+  "website": "https://shazmoghaddam.github.io",
+  "lede": "The official THE World University Rankings 2027 top 50, with where each university is and the fields it is best known for.",
+  "insights": [
+    {"value": "11", "unit": " years", "text": "Oxford is number one for a record 11th year in a row, ahead of MIT by just 0.1 points."},
+    {"value": "22", "unit": " of 50", "text": "The US has the most universities in the top 50, and the US and UK fill the whole top 10."},
+    {"value": "10", "unit": " vs 7", "text": "Asian universities in the top 50 now outnumber those from continental Europe."},
+    {"value": "4", "unit": " in London", "text": "Imperial, UCL, King’s and LSE. LSE is back in the top 50 at 47th."}
+  ],
+  "source": "Times Higher Education World University Rankings 2027, published 30 September 2026. 2,297 universities ranked across 118 countries and territories, on teaching, research environment, research quality, industry and international outlook."
+}
