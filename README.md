@@ -59,6 +59,7 @@ data/
   README.md              where the data comes from
 build.py                 builds the HTML, PDF and slides
 check.py                 checks the CSV and that the PDF matches it
+fonts/                   Inter with tabular digits built in, so PDF numbers are real text
 output/                  the generated PDF and slides
 ```
 
