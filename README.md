@@ -38,7 +38,9 @@ python -m playwright install chromium
 python build.py
 ```
 
-This writes `output/Top-50-Universities-2027.pdf` and `output/slides/slide-1.png` to `slide-8.png`. Fonts (Inter and Lora) load from Google Fonts. Without a connection, locally installed fonts are used.
+This writes `output/Top-50-Universities-2027.pdf` and `output/slides/slide-1.png` to `slide-8.png`.
+
+Then run `python check.py` to confirm the data is in order and the PDF matches it. GitHub runs the same check on every push and pull request. Fonts (Inter and Lora) load from Google Fonts. Without a connection, locally installed fonts are used.
 
 ## Updating for a new edition
 
@@ -56,6 +58,7 @@ data/
   edition-2027.json      edition settings, takeaway cards, source and byline
   README.md              where the data comes from
 build.py                 builds the HTML, PDF and slides
+check.py                 checks the CSV and that the PDF matches it
 output/                  the generated PDF and slides
 ```
 
